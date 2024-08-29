@@ -1,0 +1,97 @@
+
+services:
+  engine:
+    image: ghcr.io/hasura/v3-engine:dev-main
+    platform: linux/amd64
+    init: true
+    ports:
+      - 8081:3000
+      - 8787:8787
+    environment:
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://jaeger:4317"
+      OTEL_SERVICE_NAME: "engine"
+      RUST_LOG: "DEBUG"
+    volumes:
+      - type: bind
+        source: ./auth_config.json
+        target: /auth_config.json
+      - type: bind
+        source: ./engine-metadata.json
+        target: /engine-metadata.json
+        read_only: true
+    command:
+      - --metadata-path=/engine-metadata.json
+      - --authn-config-path=/auth_config.json
+    depends_on:
+      connector:
+        condition: service_started
+      jaeger:
+        condition: service_started
+
+  datasource:
+    image: postgis/postgis:16-3.4
+    platform: linux/amd64
+    command:
+      - -F # turn fsync off for speed
+      - -N 1000 # increase max connections from 100 so we can run more HGEs
+    ports:
+      - 64901:5432
+    environment:
+      POSTGRES_PASSWORD: "password"
+    volumes:
+      - type: tmpfs
+        target: /var/lib/postgresql/data
+      - type: bind
+        source: ./sql/initialise_chinook.sql
+        target: /docker-entrypoint-initdb.d/initialise_chinook.sql
+        read_only: true
+      - type: bind
+        source: ./sql/initialise_template_schema.sql
+        target: /docker-entrypoint-initdb.d/initialise_template_schema.sql
+        read_only: true
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "psql -U postgres template_schema"
+      start_period: 5s
+      interval: 5s
+      timeout: 10s
+      retries: 20
+
+  connector:
+    image: us-docker.pkg.dev/hasura-ddn/ddn/ndc-postgres:dev-main
+    ports:
+      - 8080
+    environment:
+      OTEL_SERVICE_NAME: "postgres-connector"
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://jaeger:4317"
+      CONNECTION_URI: "postgresql://postgres:password@datasource/template_schema"
+    volumes:
+      - type: bind
+        source: ./connector-metadata
+        target: /etc/connector
+        read_only: true
+    depends_on:
+      jaeger:
+        condition: service_started
+      datasource:
+        condition: service_healthy
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.56
+    restart: always
+    ports:
+      - 4003:16686
+      - 5775/udp
+      - 6831/udp
+      - 6832/udp
+      - 5778
+      - 14250
+      - 14268
+      - 14269
+      - 4317 # OTLP gRPC
+      - 4318:4318 # OTLP HTTP
+      - 9411
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+      COLLECTOR_ZIPKIN_HOST_PORT: "9411"
