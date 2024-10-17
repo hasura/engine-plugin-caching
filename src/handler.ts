@@ -22,8 +22,10 @@ export const cachingHandler = impl => async request => {
     }
 
     Config.queriesToCache.forEach(query => {
-      const { key } = prepare(query);
-      queriesToCache.push(key);
+      const parsed = parse(query);
+      stripLocations(parsed);
+
+      queriesToCache.push(JSON.stringify(parsed));
     })
 
     const phase: string | null =
@@ -64,11 +66,9 @@ export const preParseHandler = async (span, impl, request) => {
     })
   }
 
-  const { parsed, key } = prepare(
-    rawRequest.rawRequest.query
-  );
+  const { parsed, key } = prepare(rawRequest);
 
-  if (shouldCache(key)) {
+  if (shouldCache(parsed)) {
     if (await impl.exists(key)) {
       return respond(span, {
         code: SpanStatusCode.OK,
@@ -112,11 +112,9 @@ export const preResponseHandler = async (span, impl, request) => {
     })
   }
 
-  const { parsed, key } = prepare(
-    rawResponse.rawRequest.query
-  );
+  const { parsed, key } = prepare(rawResponse);
 
-  if (shouldCache(key)) {
+  if (shouldCache(parsed)) {
     if (await impl.exists(key)) {
       return respond(span, {
         code: SpanStatusCode.OK,
@@ -186,15 +184,23 @@ const stripLocations = abstractSyntaxTree => {
 /* Helpers */
 
 // Check whether the given value should be cached.
-const shouldCache = key => queriesToCache.indexOf(key) != -1
+const shouldCache = parsed => {
+  const key = JSON.stringify(parsed);
+  return queriesToCache.indexOf(key) != -1
+}
 
 // Convert a query to an AST and a caching key.
-const prepare = query => {
+const prepare = request => {
+  const { query, ... req } = request.rawRequest;
   const parsed = parse(query);
   stripLocations(parsed);
 
-  const key = JSON.stringify(parsed);
-  return { key, parsed };
+  const key = JSON.stringify({
+    rawRequest: { query: parsed, ... req },
+    session: request.session
+  });
+
+  return { parsed, key };
 }
 
 /* TypeScript interfaces */
