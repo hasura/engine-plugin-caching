@@ -1,12 +1,28 @@
-
 services:
+  redis:
+    image: redis:latest
+    ports:
+      - 6379:6379
+
+  plugin:
+    build:
+      context: ..
+    ports:
+      - 8787:8787
+    depends_on:
+      redis:
+        condition: service_started
+
+  # A sample DDN project that uses the plugin to cache requests. Running
+  # `docker compose up engine plugin` will give you a working GraphiQL
+  # interface at `localhost:8081` to explore.
+
   engine:
     image: ghcr.io/hasura/v3-engine:dev-main
     platform: linux/amd64
     init: true
     ports:
       - 8081:3000
-      - 8787:8787
     environment:
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://jaeger:4317"
       OTEL_SERVICE_NAME: "engine"
@@ -28,36 +44,6 @@ services:
       jaeger:
         condition: service_started
 
-  datasource:
-    image: postgis/postgis:16-3.4
-    platform: linux/amd64
-    command:
-      - -F # turn fsync off for speed
-      - -N 1000 # increase max connections from 100 so we can run more HGEs
-    ports:
-      - 64901:5432
-    environment:
-      POSTGRES_PASSWORD: "password"
-    volumes:
-      - type: tmpfs
-        target: /var/lib/postgresql/data
-      - type: bind
-        source: ./sql/initialise_chinook.sql
-        target: /docker-entrypoint-initdb.d/initialise_chinook.sql
-        read_only: true
-      - type: bind
-        source: ./sql/initialise_template_schema.sql
-        target: /docker-entrypoint-initdb.d/initialise_template_schema.sql
-        read_only: true
-    healthcheck:
-      test:
-        - CMD-SHELL
-        - "psql -U postgres template_schema"
-      start_period: 5s
-      interval: 5s
-      timeout: 10s
-      retries: 20
-
   connector:
     image: us-docker.pkg.dev/hasura-ddn/ddn/ndc-postgres:dev-main
     ports:
@@ -65,7 +51,7 @@ services:
     environment:
       OTEL_SERVICE_NAME: "postgres-connector"
       OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: "http://jaeger:4317"
-      CONNECTION_URI: "postgresql://postgres:password@datasource/template_schema"
+      CONNECTION_URI: "postgresql://postgres:password@datasource/chinook"
     volumes:
       - type: bind
         source: ./connector-metadata
@@ -77,21 +63,23 @@ services:
       datasource:
         condition: service_healthy
 
+  datasource:
+    build: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: "password"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
   jaeger:
     image: jaegertracing/all-in-one:1.56
     restart: always
     ports:
       - 4003:16686
-      - 5775/udp
-      - 6831/udp
-      - 6832/udp
-      - 5778
-      - 14250
-      - 14268
-      - 14269
-      - 4317 # OTLP gRPC
-      - 4318:4318 # OTLP HTTP
-      - 9411
+      - 4318:4318
     environment:
       COLLECTOR_OTLP_ENABLED: "true"
-      COLLECTOR_ZIPKIN_HOST_PORT: "9411"

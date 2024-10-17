@@ -1,7 +1,4 @@
 ## Testing
 
-1. Run `npm run dev` in the root of this repository to start the plugin.
-
-2. Run `docker compose up` in this directory.
-
-3. Go to `localhost:8081` to interact with a working GraphiQL instance.
+Run `docker compose up` to get a fully working caching setup for testing.
+A GraphiQL interface is available at `http://localhost:8081`.

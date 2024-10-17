@@ -51,7 +51,7 @@
         "foreignRelations": {
           "FK_AlbumArtistId": {
             "foreignSchema": "public",
-            "foreignTable": "Artist",
+            "foreignTable": "artist",
             "columnMapping": {
               "ArtistId": "ArtistId"
             }
@@ -59,9 +59,9 @@
         },
         "description": null
       },
-      "Artist": {
+      "artist": {
         "schemaName": "public",
-        "tableName": "Artist",
+        "tableName": "artist",
         "columns": {
           "ArtistId": {
             "name": "ArtistId",
@@ -71,8 +71,8 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "Name": {
-            "name": "Name",
+          "name": {
+            "name": "name",
             "type": {
               "scalarType": "varchar"
             },
@@ -360,8 +360,8 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "Name": {
-            "name": "Name",
+          "name": {
+            "name": "name",
             "type": {
               "scalarType": "varchar"
             },
@@ -544,8 +544,8 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "Name": {
-            "name": "Name",
+          "name": {
+            "name": "name",
             "type": {
               "scalarType": "varchar"
             },
@@ -563,8 +563,8 @@
         "schemaName": "public",
         "tableName": "Playlist",
         "columns": {
-          "Name": {
-            "name": "Name",
+          "name": {
+            "name": "name",
             "type": {
               "scalarType": "varchar"
             },
@@ -680,8 +680,8 @@
             "nullable": "nonNullable",
             "description": null
           },
-          "Name": {
-            "name": "Name",
+          "name": {
+            "name": "name",
             "type": {
               "scalarType": "varchar"
             },
@@ -2538,8 +2538,8 @@
             "nullable": "nullable",
             "description": null
           },
-          "Name": {
-            "name": "Name",
+          "name": {
+            "name": "name",
             "type": {
               "scalarType": "varchar"
             },
@@ -2563,8 +2563,8 @@
             "nullable": "nullable",
             "description": null
           },
-          "Name": {
-            "name": "Name",
+          "name": {
+            "name": "name",
             "type": {
               "scalarType": "varchar"
             },
@@ -2719,8 +2719,8 @@
             "nullable": "nullable",
             "description": null
           },
-          "Name": {
-            "name": "Name",
+          "name": {
+            "name": "name",
             "type": {
               "scalarType": "varchar"
             },
