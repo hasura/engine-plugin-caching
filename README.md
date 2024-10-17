@@ -99,6 +99,9 @@ any of these queries. If it does, the query will be cached. This means that
 whitespace is unimportant in these queries, and you can write them over
 multiple lines.
 
+A result will be cached for each set of session and query variables that use
+this same query template.
+
 #### The `timeToLive` for a cache entry
 
 ```javascript
