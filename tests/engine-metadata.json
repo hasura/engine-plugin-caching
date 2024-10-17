@@ -63,7 +63,7 @@
             "url": { "value": "http://host.docker.internal:8787" },
             "config": {
               "request": {
-                "headers" :{
+                "headers": {
                   "additional": {
                     "hasura-m-auth": { "value": "zZkhKqFjqXR4g5MZCsJUZCnhCcoPyZ" },
                     "hasura-plugin-phase": { "value": "pre-parse" }
@@ -86,7 +86,7 @@
             "url": { "value": "http://host.docker.internal:8787" },
             "config": {
               "request": {
-                "headers" :{
+                "headers": {
                   "additional": {
                     "hasura-m-auth": { "value": "zZkhKqFjqXR4g5MZCsJUZCnhCcoPyZ" },
                     "hasura-plugin-phase": { "value": "pre-response" }
