@@ -4,151 +4,146 @@ import { parse } from "graphql";
 
 const tracer = trace.getTracer("caching-plugin")
 const storage: { [string]: { response: string, expiry: number } } = {}
+const queriesToCache = []
 
 // A pre-parse and pre-response plugin handler for caching Hasura requests.
-export const cachingHandler = impl => async (env, request) => {
-  const token = Config.headers['hasura-m-auth']
+export const cachingHandler = impl => async request => {
+  return tracer.startActiveSpan('Caching plugin', async span => {
+    const token = Config.headers['hasura-m-auth']
 
-  if (request.headers?.get('hasura-m-auth') !== token) {
-    return respond(span, {
-      code: SpanStatusCode.ERROR,
-      trace: 'unauthorised request',
-      visibility: null,
-      response: { message: 'unauthorised request' },
-      status: 500,
-    })
-  }
-
-  const phase: string | null =
-    request.headers?.get('hasura-plugin-phase')
-
-  switch (phase) {
-    case 'pre-parse':
-      return preParseHandler(env, impl, request)
-
-    case 'pre-response':
-      return preResponseHandler(env, impl, request)
-
-    default:
+    if (request.headers?.get('hasura-m-auth') !== token) {
       return respond(span, {
         code: SpanStatusCode.ERROR,
         trace: 'unauthorised request',
         visibility: null,
-        response: { message: 'unrecognised phase: ' + phase },
-        status: 500
+        response: { message: 'unauthorised request' },
+        status: 500,
       })
-  }
+    }
+
+    Config.queriesToCache.forEach(query => {
+      const { key } = prepare(query);
+      queriesToCache.push(key);
+    })
+
+    const phase: string | null =
+      request.headers?.get('hasura-plugin-phase')
+
+    switch (phase) {
+      case 'pre-parse':
+        return preParseHandler(span, impl, request)
+
+      case 'pre-response':
+        return preResponseHandler(span, impl, request)
+
+      default:
+        return respond(span, {
+          code: SpanStatusCode.ERROR,
+          trace: 'unrecognised phase',
+          visibility: null,
+          response: { message: 'unrecognised phase: ' + phase },
+          status: 500
+        })
+    }
+  })
 }
 
 // A pre-parse handler for caching Hasura requests. This half is in charge of
 // looking up a request in the cache, and determining whether or not to
 // continue executing.
-export const preParseHandler = (env, impl, request) => {
-  return tracer.startActiveSpan('Handle pre-parse request', async span => {
-    const rawRequest = <PreParsePluginRequest>await request.json()
+export const preParseHandler = async (span, impl, request) => {
+  const rawRequest = <PreParsePluginRequest>await request.json()
 
-    if (rawRequest.rawRequest?.query == null) {
-      return respond(span, {
-        code: SpanStatusCode.ERROR,
-        trace: 'bad request',
-        visibility: null,
-        response: { message: 'bad request' },
-        status: 400,
-      })
-    }
+  if (rawRequest.rawRequest?.query == null) {
+    return respond(span, {
+      code: SpanStatusCode.ERROR,
+      trace: 'bad request',
+      visibility: null,
+      response: { message: 'bad request' },
+      status: 400,
+    })
+  }
 
-    const parsed = parse(rawRequest.rawRequest.query);
-    stripLocations(parsed);
+  const { parsed, key } = prepare(
+    rawRequest.rawRequest.query
+  );
 
-    const key = makeCacheKey(parsed);
-
-    if (forcedCacheRefresh(parsed)) {
-      impl.delete(key)
-
-      return respond(span, {
-        code: SpanStatusCode.OK,
-        trace: 'user deliberately wiped the cache',
-        visibility: 'user',
-        response: null,
-        status: 204
-      })
-    } else if (disabledCaching(parsed)) {
-      return respond(span, {
-        code: SpanStatusCode.OK,
-        trace: 'user requested to skip caching',
-        visibility: 'user',
-        response: null,
-        status: 204
-      })
-    } else if (impl.exists(key)) {
+  if (shouldCache(key)) {
+    if (await impl.exists(key)) {
       return respond(span, {
         code: SpanStatusCode.OK,
         trace: 'found query response in cache',
         visibility: 'user',
-        response: impl.read(key),
+        response: await impl.read(key),
         status: 200
       })
     }
 
     return respond(span, {
       code: SpanStatusCode.OK,
-      trace: 'query not found in cache',
+      trace: 'found cacheable query with no current entry',
       visibility: 'user',
-      response: null,
+      response: undefined,
       status: 204
     })
+  }
+
+  return respond(span, {
+    code: SpanStatusCode.OK,
+    trace: 'query not listed as cacheable',
+    visibility: 'user',
+    response: null,
+    status: 204
   })
 }
 
 // A pre-response handler for caching Hasura requests. This half is in charge
-// of storing a response in the cache according to the request's caching
-// directives.
-export const preResponseHandler = (env, impl, request) => {
-  return tracer.startActiveSpan('Handle response', async span => {
-    const rawResponse = <PreResponsePluginRequest>await request.json()
+// of storing a response in the cache according to the caching configuration.
+export const preResponseHandler = async (span, impl, request) => {
+  const rawResponse = <PreResponsePluginRequest>await request.json()
 
-    if (rawResponse.rawRequest?.query == null) {
-      return respond(span, {
-        code: SpanStatusCode.ERROR,
-        trace: 'bad request',
-        visibility: null,
-        response: { message: 'bad request' },
-        status: 400,
-      })
-    }
+  if (rawResponse.rawRequest?.query == null) {
+    return respond(span, {
+      code: SpanStatusCode.ERROR,
+      trace: 'bad request',
+      visibility: null,
+      response: { message: 'bad request' },
+      status: 400,
+    })
+  }
 
-    const parsed = parse(rawResponse.rawRequest.query)
-    stripLocations(parsed)
+  const { parsed, key } = prepare(
+    rawResponse.rawRequest.query
+  );
 
-    const key = makeCacheKey(parsed);
-
-    if (disabledCaching(parsed)) {
+  if (shouldCache(key)) {
+    if (await impl.exists(key)) {
       return respond(span, {
         code: SpanStatusCode.OK,
-        trace: 'user requested to skip caching',
-        visibility: 'user',
-        response: null,
-        status: 204
-      })
-    } else if (requestedCaching(parsed) && !impl.exists(key)) {
-      impl.write(key, rawResponse.response, getCacheTTL(env, parsed));
-
-      return respond(span, {
-        code: SpanStatusCode.OK,
-        trace: 'saved response to cache',
+        trace: 'value already cached',
         visibility: 'user',
         response: rawResponse.response,
         status: 200
       })
     }
 
+    await impl.write(key, rawResponse.response, Config.timeToLive);
+
     return respond(span, {
       code: SpanStatusCode.OK,
-      trace: 'nothing saved to cache',
+      trace: 'saved response to cache',
       visibility: 'user',
-      response: null,
+      response: rawResponse.response,
       status: 200
     })
+  }
+
+  return respond(span, {
+    code: SpanStatusCode.OK,
+    trace: 'nothing saved to cache',
+    visibility: 'user',
+    response: null,
+    status: 200
   })
 }
 
@@ -175,17 +170,6 @@ const respond = (span, config) => {
 
 /* AST tools */
 
-// Make a key for the cache. We just strip syntax locations and 
-const makeCacheKey = abstractSyntaxTree => {
-  const { directives, ... object } =
-    abstractSyntaxTree.definitions[0]
-
-  const filtered = directives.filter(directive =>
-    directive.name.value == "cache")
-
-  return JSON.stringify({ directives: filtered, ... object })
-}
-
 // Remove all locations from the AST. This makes the likelihood of a cache hit
 // a little higher, because whitespace is no longer important.
 const stripLocations = abstractSyntaxTree => {
@@ -199,33 +183,18 @@ const stripLocations = abstractSyntaxTree => {
   }
 }
 
-// Check whether caching has been specifically disabled for this request.
-const disabledCaching = abstractSyntaxTree =>
-  abstractSyntaxTree.definitions[0]?.directives
-    .some(directive => directive.name.value == "nocache")
+/* Helpers */
 
-// Check an AST to see whether caching has been requested.
-// Returns either the caching directive or undefined.
-const requestedCaching = abstractSyntaxTree =>
-  abstractSyntaxTree.definitions[0]?.directives
-    .find(directive => directive.name.value == "cached")
+// Check whether the given value should be cached.
+const shouldCache = key => queriesToCache.indexOf(key) != -1
 
-// Check an AST to see whether the user has explicitly requested that the
-// cache be refreshed.
-const forcedCacheRefresh = abstractSyntaxTree =>
-  requestedCaching(abstractSyntaxTree)?.arguments
-    .find(argument => argument.name.value == "refresh")
-      ?.value.value
+// Convert a query to an AST and a caching key.
+const prepare = query => {
+  const parsed = parse(query);
+  stripLocations(parsed);
 
-// Get the requested TTL for this request.
-// Returns either the TTL or the user-set default.
-const getCacheTTL = (env, abstractSyntaxTree) => {
-  const requestedTTL
-    = requestedCaching(abstractSyntaxTree)?.arguments
-      .find(argument => argument.name.value == "ttl")
-
-  const parsed: number = parseInt(requestedTTL?.value.value)
-  return isNaN(parsed) ? env.CACHE_DEFAULT_TTL : parsed
+  const key = JSON.stringify(parsed);
+  return { key, parsed };
 }
 
 /* TypeScript interfaces */

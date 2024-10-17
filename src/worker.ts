@@ -5,7 +5,7 @@ import { instrument, ResolveConfigFn } from "@microlabs/otel-cf-workers";
 const handler = {
   async fetch(request, env, ctx) {
     trace.getActiveSpan()?.setAttribute("internal.visibility", String("user"));
-    return cachingHandler(env, request);
+    return cachingHandler(request);
   },
 };
 
