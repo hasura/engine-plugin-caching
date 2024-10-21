@@ -2,15 +2,17 @@
   "name": "caching",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
-    "deploy": "wrangler deploy",
-    "dev": "wrangler dev",
-    "start": "wrangler dev"
+    "dev": "node src/index.js",
+    "start": "node src/index.js"
   },
   "dependencies": {
     "@microlabs/otel-cf-workers": "^1.0.0-rc.43",
     "@opentelemetry/api": "^1.6.0",
+    "express": "^4.21.1",
     "graphql": "^16.9.0",
-    "wrangler": "^3.80.4"
+    "joi": "^17.13.3",
+    "serverless-http": "^3.2.0"
   }
 }
