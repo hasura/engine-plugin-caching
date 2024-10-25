@@ -1,37 +1,29 @@
-import { Config } from "./config.js";
-import { parse, stripLocations } from "./utilities.js"
+import { createClient } from 'redis';
 
-const storage = {};
+import { Config } from "./config.js";
+import { stripLocations } from "./request.js"
+import { parse } from "graphql";
+
 let queriesToCache = null;
+
+const client = await createClient({ url: Config.redis_url })
+  .on('error', err => console.log('Client error', err))
+  .connect();
 
 export const generateKey = parsed => JSON.stringify(parsed);
 
 export const writeEntryToCache = (key, value, ttl) => {
-  console.log({ key, storage })
-  storage[key] = {
-    response: JSON.stringify(value),
-    expiry: ttl + Math.round(new Date() / 1000)
-  }
+  initialise();
+  client.set(key, JSON.stringify(value), 'EX', Config.timeToLive)
 }
 
-export const cacheEntryExists = key => {
-  initialise()
-
-  const now = Math.floor(new Date() / 1000);
-  return key in storage && storage[key].expiry > now;
-};
-
 export const lookupCacheEntry = key => {
-  initialise()
-  console.log({ key, storage })
-
-  return cacheEntryExists(key)
-    ? storage[key].response
-    : null;
+  initialise();
+  return client.get(key)
 };
 
 export const shouldCache = parsed => {
-  initialise()
+  initialise();
 
   const key = JSON.stringify(parsed);
   return queriesToCache.indexOf(key) != -1

@@ -60,13 +60,12 @@
           "definition": {
             "pre": "parse",
             "name": "cache_get_test",
-            "url": { "value": "http://host.docker.internal:8787" },
+            "url": { "value": "http://express:8787/pre-parse" },
             "config": {
               "request": {
                 "headers": {
                   "additional": {
-                    "hasura-m-auth": { "value": "zZkhKqFjqXR4g5MZCsJUZCnhCcoPyZ" },
-                    "hasura-plugin-phase": { "value": "pre-parse" }
+                    "hasura-m-auth": { "value": "zZkhKqFjqXR4g5MZCsJUZCnhCcoPyZ" }
                   }
                 },
                 "rawRequest": {
@@ -83,13 +82,12 @@
           "definition": {
             "pre": "response",
             "name": "cache_set_test",
-            "url": { "value": "http://host.docker.internal:8787" },
+            "url": { "value": "http://express:8787/pre-response" },
             "config": {
               "request": {
                 "headers": {
                   "additional": {
-                    "hasura-m-auth": { "value": "zZkhKqFjqXR4g5MZCsJUZCnhCcoPyZ" },
-                    "hasura-plugin-phase": { "value": "pre-response" }
+                    "hasura-m-auth": { "value": "zZkhKqFjqXR4g5MZCsJUZCnhCcoPyZ" }
                   }
                 },
                 "rawRequest": {

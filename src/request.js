@@ -1,6 +1,4 @@
-import * as graphql from "graphql";
-
-export const parse = graphql.parse
+import { parse } from 'graphql'
 
 export const prepareRequest = request => {
   const { query, ... req } = request.rawRequest;
