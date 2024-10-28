@@ -71,7 +71,7 @@ OTEL_EXPORTER_PAT = "<PAT>"
 
 ### Execution
 
-Execution configuration is found in `src/config.ts`. Currently, there are three
+Execution configuration is found in `src/config.js`. Currently, there are three
 available keys:
 
 #### Expected `headers`
@@ -84,10 +84,10 @@ Headers expected from the `engine` when a request to the plugin is made.
 Currently, only one header is expected: `hasura-m-auth` is a user-specified
 secret that the engine should send over in its requests.
 
-#### A list of `queriesToCache`
+#### A list of `queries_to_cache`
 
 ```javascript
-queriesToCache: [
+queries_to_cache: [
   "query { Artist { Name } }",
   "query { Album { Artist { Name } } }"
 ]
@@ -102,11 +102,23 @@ multiple lines.
 A result will be cached for each set of session and query variables that use
 this same query template.
 
-#### The `timeToLive` for a cache entry
+#### The `time_to_live` for a cache entry
 
 ```javascript
-timeToLive: 600
+time_to_live: 600
 ```
 
 The length of time after which a given cache entry should be invalidated. This
 is measured in seconds.
+
+#### A `redis_url` for storing the cache entries.
+
+```javascript
+redis_url: "redis://redis:6379"
+```
+
+#### An `otel_endpoint` for OpenTelemetry traces.
+
+```javascript
+otel_endpoint: "http://jaeger:4318/v1/traces"
+```
