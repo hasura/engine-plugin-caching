@@ -1,5 +1,7 @@
 import { parse } from 'graphql'
 
+// Parse a request to convert the request into an AST, and then use that AST
+// and the other information to produce a cache key.
 export const prepareRequest = request => {
   const { query, ... req } = request.rawRequest;
   const parsed = parse(query);
@@ -13,6 +15,9 @@ export const prepareRequest = request => {
   return { parsed, key };
 }
 
+// The AST parsed by the `graphql` package contains location information from
+// the original file. We strip all this as we want our caching to be
+// independent of whitespace.
 export const stripLocations = abstractSyntaxTree => {
   switch (typeof abstractSyntaxTree) {
     case 'object':

@@ -1,6 +1,6 @@
 import { Config } from '../config.js'
 import { prepareRequest } from '../request.js'
-import { lookupCacheEntry, shouldCache } from '../cache.js'
+import { lookupCacheEntry, shouldCache, writeEntryToCache } from '../cache.js'
 
 import preResponsePluginRequest from '../types/response.js'
 import { respond, userError } from '../server/response.js'
@@ -31,7 +31,6 @@ export default async request => {
   if (!shouldCache(parsed)) {
     return respond({
       attributes: { visibility: 'user' },
-      response: null,
       message: 'nothing saved to cache',
     })
   }
@@ -41,19 +40,14 @@ export default async request => {
   if (lookup != null) {
     return respond({
       attributes: { visibility: 'user' },
-      response: lookup.response,
       message: 'value already cached',
     })
   }
 
-  await writeEntryToCache(key,
-    userResponse.value.response,
-    Config.timeToLive
-  );
+  await writeEntryToCache(key, userResponse.value.response);
 
   return respond({
     attributes: { visibility: 'user' },
-    response: userResponse.response,
     message: 'saved response to cache',
   })
 }

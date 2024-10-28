@@ -16,6 +16,7 @@ export default async request => {
     })
   }
 
+  console.log(request.body)
   const userRequest = preParsePluginRequest.validate(request.body);
 
   if (userRequest.error != null) {
@@ -46,7 +47,7 @@ export default async request => {
 
   return respond({
     attributes: { visibility: 'user' },
-    response: lookup,
+    response: JSON.parse(lookup),
     message: 'found query response in cache',
   })
 }

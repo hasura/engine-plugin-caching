@@ -10,7 +10,7 @@ import tracer from './tracing.js'
 export const app = express();
 app.use(express.json());
 
-app.get('/pre-parse', withTrace(tracer, 'pre-parse', preParseLifecycleHook))
-app.get('/pre-response', withTrace(tracer, 'pre-response', preResponseLifecycleHook))
+app.post('/pre-parse', withTrace(tracer, 'pre-parse', preParseLifecycleHook))
+app.post('/pre-response', withTrace(tracer, 'pre-response', preResponseLifecycleHook))
 
 export const handler = serverless(app)

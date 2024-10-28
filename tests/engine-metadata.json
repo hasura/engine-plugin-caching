@@ -275,10 +275,10 @@
                   }
                 },
                 "object_types": {
-                  "Artist": {
+                  "artist": {
                     "description": "An artist",
                     "fields": {
-                      "ArtistId": {
+                      "artistId": {
                         "description": "The artist's primary key",
                         "arguments": {},
                         "type": {
@@ -286,7 +286,7 @@
                           "name": "int4"
                         }
                       },
-                      "Name": {
+                      "name": {
                         "description": "The artist's name",
                         "arguments": {},
                         "type": {
@@ -296,7 +296,7 @@
                       }
                     }
                   },
-                  "Artist_response": {
+                  "artist_response": {
                     "description": "Responses from the 'insert_artist' procedure",
                     "fields": {
                       "affected_rows": {
@@ -314,7 +314,7 @@
                           "type": "array",
                           "element_type": {
                             "type": "named",
-                            "name": "Artist"
+                            "name": "artist"
                           }
                         }
                       }
@@ -339,10 +339,10 @@
                       }
                     }
                   },
-                  "Album": {
+                  "album": {
                     "description": "An album",
                     "fields": {
-                      "AlbumId": {
+                      "albumId": {
                         "description": "The album's primary key",
                         "arguments": {},
                         "type": {
@@ -358,7 +358,7 @@
                           "name": "varchar"
                         }
                       },
-                      "ArtistId": {
+                      "artistId": {
                         "description": "The album's artist ID",
                         "arguments": {},
                         "type": {
@@ -368,7 +368,7 @@
                       }
                     }
                   },
-                  "Album_response": {
+                  "album_response": {
                     "description": "Responses from the 'insert_album' procedure",
                     "fields": {
                       "affected_rows": {
@@ -386,7 +386,7 @@
                           "type": "array",
                           "element_type": {
                             "type": "named",
-                            "name": "Album"
+                            "name": "album"
                           }
                         }
                       }
@@ -403,7 +403,7 @@
                           "name": "int4"
                         }
                       },
-                      "Name": {
+                      "name": {
                         "description": "The track's name",
                         "arguments": {},
                         "type": {
@@ -411,7 +411,7 @@
                           "name": "varchar"
                         }
                       },
-                      "AlbumId": {
+                      "albumId": {
                         "description": "The track's album ID",
                         "arguments": {},
                         "type": {
@@ -445,7 +445,7 @@
                   "artist_below_id": {
                     "description": "An artist",
                     "fields": {
-                      "ArtistId": {
+                      "artistId": {
                         "description": "The artist's primary key",
                         "arguments": {},
                         "type": {
@@ -453,7 +453,7 @@
                           "name": "int4"
                         }
                       },
-                      "Name": {
+                      "name": {
                         "description": "The artist's name",
                         "arguments": {},
                         "type": {
@@ -463,12 +463,12 @@
                       }
                     }
                   },
-                  "v2_insert_Artist_object": {
+                  "v2_insert_artist_object": {
                     "fields": {
-                      "ArtistId": {
+                      "artistId": {
                         "type": { "type": "named", "name": "int4" }
                       },
-                      "Name": {
+                      "name": {
                         "type": {
                           "type": "nullable",
                           "underlying_type": {
@@ -479,8 +479,8 @@
                       }
                     }
                   },
-                  "v2_insert_Artist_response": {
-                    "description": "Responses from the 'v2_insert_Artist' procedure",
+                  "v2_insert_artist_response": {
+                    "description": "Responses from the 'v2_insert_artist' procedure",
                     "fields": {
                       "affected_rows": {
                         "description": "The number of rows affected by the mutation",
@@ -490,14 +490,14 @@
                         "description": "Data from rows affected by the mutation",
                         "type": {
                           "type": "array",
-                          "element_type": { "type": "named", "name": "Artist" }
+                          "element_type": { "type": "named", "name": "artist" }
                         }
                       }
                     }
                   },
 
-                  "v2_update_Artist_by_ArtistId_response": {
-                    "description": "Responses from the 'v2_update_Artist_by_ArtistId' procedure",
+                  "v2_update_artist_by_artistId_response": {
+                    "description": "Responses from the 'v2_update_artist_by_artistId' procedure",
                     "fields": {
                       "affected_rows": {
                         "description": "The number of rows affected by the mutation",
@@ -507,32 +507,32 @@
                         "description": "Data from rows affected by the mutation",
                         "type": {
                           "type": "array",
-                          "element_type": { "type": "named", "name": "Artist" }
+                          "element_type": { "type": "named", "name": "artist" }
                         }
                       }
                     }
                   },
-                  "v2_update_Artist_by_ArtistId_update_columns": {
-                    "description": "Update the columns of the 'Artist' collection",
+                  "v2_update_artist_by_artistId_update_columns": {
+                    "description": "Update the columns of the 'artist' collection",
                     "fields": {
-                      "ArtistId": {
-                        "description": "Update the 'ArtistId' column in the 'Artist' collection.",
+                      "artistId": {
+                        "description": "Update the 'artistId' column in the 'artist' collection.",
                         "type": {
                           "type": "named",
-                          "name": "update_column_Artist_ArtistId"
+                          "name": "update_column_artist_artistId"
                         }
                       },
-                      "Name": {
-                        "description": "Update the 'Name' column in the 'Artist' collection.",
+                      "name": {
+                        "description": "Update the 'Name' column in the 'artist' collection.",
                         "type": {
                           "type": "named",
-                          "name": "update_column_Artist_Name"
+                          "name": "update_column_artist_Name"
                         }
                       }
                     }
                   },
-                  "update_column_Artist_ArtistId": {
-                    "description": "Update the 'ArtistId' column in the 'Artist' collection",
+                  "update_column_artist_artistId": {
+                    "description": "Update the 'artistId' column in the 'artist' collection",
                     "fields": {
                       "_set": {
                         "description": "Set the column to this value",
@@ -540,8 +540,8 @@
                       }
                     }
                   },
-                  "update_column_Artist_Name": {
-                    "description": "Update the 'Name' column in the 'Artist' collection",
+                  "update_column_artist_Name": {
+                    "description": "Update the 'Name' column in the 'artist' collection",
                     "fields": {
                       "_set": {
                         "description": "Set the column to this value",
@@ -558,27 +558,27 @@
                 },
                 "collections": [
                   {
-                    "name": "Artist",
+                    "name": "artist",
                     "description": "A collection of artists",
                     "arguments": {},
-                    "type": "Artist",
+                    "type": "artist",
                     "deletable": false,
                     "uniqueness_constraints": {
-                      "ArtistById": {
-                        "unique_columns": ["ArtistId"]
+                      "artistById": {
+                        "unique_columns": ["artistId"]
                       }
                     },
                     "foreign_keys": {}
                   },
                   {
-                    "name": "Album",
+                    "name": "album",
                     "description": "A collection of albums",
                     "arguments": {},
-                    "type": "Album",
+                    "type": "album",
                     "deletable": false,
                     "uniqueness_constraints": {
-                      "AlbumById": {
-                        "unique_columns": ["AlbumId"]
+                      "albumById": {
+                        "unique_columns": ["albumId"]
                       }
                     },
                     "foreign_keys": {}
@@ -621,7 +621,7 @@
                         }
                       }
                     },
-                    "type": "Artist",
+                    "type": "artist",
                     "deletable": false,
                     "uniqueness_constraints": {},
                     "foreign_keys": {}
@@ -630,29 +630,29 @@
                 "functions": [],
                 "procedures": [
                   {
-                    "name": "v2_insert_Artist",
-                    "description": "Insert into the Artist table",
+                    "name": "v2_insert_artist",
+                    "description": "Insert into the artist table",
                     "arguments": {
                       "objects": {
                         "type": {
                           "type": "array",
                           "element_type": {
                             "type": "named",
-                            "name": "v2_insert_Artist_object"
+                            "name": "v2_insert_artist_object"
                           }
                         }
                       },
                       "post_check": {
-                        "description": "Insert permission predicate over the 'Artist' collection",
+                        "description": "Insert permission predicate over the 'artist' collection",
                         "type": {
                           "type": "predicate",
-                          "object_type_name": "Artist"
+                          "object_type_name": "artist"
                         }
                       }
                     },
                     "result_type": {
                       "type": "named",
-                      "name": "v2_insert_Artist_response"
+                      "name": "v2_insert_artist_response"
                     }
                   },
                   {
@@ -683,7 +683,7 @@
                     },
                     "result_type": {
                       "type": "named",
-                      "name": "Album_response"
+                      "name": "album_response"
                     }
                   },
                   {
@@ -707,7 +707,7 @@
                     },
                     "result_type": {
                       "type": "named",
-                      "name": "Artist_response"
+                      "name": "artist_response"
                     }
                   },
                   {
@@ -737,37 +737,37 @@
                   },
 
                   {
-                    "name": "v2_update_Artist_by_ArtistId",
-                    "description": "Update any row on the 'Artist' collection using the 'ArtistId' key",
+                    "name": "v2_update_artist_by_artistId",
+                    "description": "Update any row on the 'artist' collection using the 'artistId' key",
                     "arguments": {
-                      "key_ArtistId": {
+                      "key_artistId": {
                         "description": "The identifier of an artist",
                         "type": { "type": "named", "name": "int4" }
                       },
                       "post_check": {
-                        "description": "Update permission post-condition predicate over the 'Artist' collection",
+                        "description": "Update permission post-condition predicate over the 'artist' collection",
                         "type": {
                           "type": "predicate",
-                          "object_type_name": "Artist"
+                          "object_type_name": "artist"
                         }
                       },
                       "pre_check": {
-                        "description": "Update permission pre-condition predicate over the 'Artist' collection",
+                        "description": "Update permission pre-condition predicate over the 'artist' collection",
                         "type": {
                           "type": "predicate",
-                          "object_type_name": "Artist"
+                          "object_type_name": "artist"
                         }
                       },
                       "update_columns": {
                         "type": {
                           "type": "named",
-                          "name": "v2_update_Artist_by_ArtistId_update_columns"
+                          "name": "v2_update_artist_by_artistId_update_columns"
                         }
                       }
                     },
                     "result_type": {
                       "type": "named",
-                      "name": "v2_update_Artist_by_ArtistId_response"
+                      "name": "v2_update_artist_by_artistId_response"
                     }
                   }
                 ]
@@ -797,23 +797,23 @@
         },
         {
           "definition": {
-            "name": "Artist",
+            "name": "artist",
             "fields": [
               {
-                "name": "ArtistId",
+                "name": "artistId",
                 "type": "Int"
               },
               {
-                "name": "Name",
+                "name": "name",
                 "type": "String"
               }
             ],
             "graphql": {
-              "typeName": "Artist",
+              "typeName": "artist",
               "apolloFederation": {
                 "keys": [
                   {
-                    "fields": ["ArtistId"]
+                    "fields": ["artistId"]
                   }
                 ]
               }
@@ -821,16 +821,16 @@
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "Artist",
+                "dataConnectorObjectType": "artist",
                 "fieldMapping": {
-                  "ArtistId": {
+                  "artistId": {
                     "column": {
-                      "name": "ArtistId"
+                      "name": "artistId"
                     }
                   },
-                  "Name": {
+                  "name": {
                     "column": {
-                      "name": "Name"
+                      "name": "name"
                     }
                   }
                 }
@@ -842,7 +842,7 @@
         },
         {
           "definition": {
-            "name": "Artist_response",
+            "name": "artist_response",
             "fields": [
               {
                 "name": "affected_rows",
@@ -850,16 +850,16 @@
               },
               {
                 "name": "returning",
-                "type": "[Artist]"
+                "type": "[artist]"
               }
             ],
             "graphql": {
-              "typeName": "Artist_response"
+              "typeName": "artist_response"
             },
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "Artist_response",
+                "dataConnectorObjectType": "artist_response",
                 "fieldMapping": {
                   "affected_rows": {
                     "column": {
@@ -880,10 +880,10 @@
         },
         {
           "definition": {
-            "name": "Album",
+            "name": "album",
             "fields": [
               {
-                "name": "AlbumId",
+                "name": "albumId",
                 "type": "Int"
               },
               {
@@ -891,21 +891,21 @@
                 "type": "String"
               },
               {
-                "name": "ArtistId",
+                "name": "artistId",
                 "type": "Int"
               }
             ],
             "graphql": {
-              "typeName": "Album"
+              "typeName": "album"
             },
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "Album",
+                "dataConnectorObjectType": "album",
                 "fieldMapping": {
-                  "AlbumId": {
+                  "albumId": {
                     "column": {
-                      "name": "AlbumId"
+                      "name": "albumId"
                     }
                   },
                   "Title": {
@@ -913,9 +913,9 @@
                       "name": "Title"
                     }
                   },
-                  "ArtistId": {
+                  "artistId": {
                     "column": {
-                      "name": "ArtistId"
+                      "name": "artistId"
                     }
                   }
                 }
@@ -927,7 +927,7 @@
         },
         {
           "definition": {
-            "name": "Album_response",
+            "name": "album_response",
             "fields": [
               {
                 "name": "affected_rows",
@@ -935,16 +935,16 @@
               },
               {
                 "name": "returning",
-                "type": "[Album]"
+                "type": "[album]"
               }
             ],
             "graphql": {
-              "typeName": "Album_response"
+              "typeName": "album_response"
             },
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "Album_response",
+                "dataConnectorObjectType": "album_response",
                 "fieldMapping": {
                   "affected_rows": {
                     "column": {
@@ -972,11 +972,11 @@
                 "type": "Int"
               },
               {
-                "name": "Name",
+                "name": "name",
                 "type": "String"
               },
               {
-                "name": "AlbumId",
+                "name": "albumId",
                 "type": "Int"
               }
             ],
@@ -993,14 +993,14 @@
                       "name": "TrackId"
                     }
                   },
-                  "Name": {
+                  "name": {
                     "column": {
-                      "name": "Name"
+                      "name": "name"
                     }
                   },
-                  "AlbumId": {
+                  "albumId": {
                     "column": {
-                      "name": "AlbumId"
+                      "name": "albumId"
                     }
                   }
                 }
@@ -1060,30 +1060,30 @@
             "name": "artist_below_id",
             "fields": [
               {
-                "name": "ArtistId",
+                "name": "artistId",
                 "type": "Int"
               },
               {
-                "name": "Name",
+                "name": "name",
                 "type": "String"
               }
             ],
             "graphql": {
-              "typeName": "ArtistBelowId"
+              "typeName": "artistBelowId"
             },
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "Artist",
+                "dataConnectorObjectType": "artist",
                 "fieldMapping": {
-                  "ArtistId": {
+                  "artistId": {
                     "column": {
-                      "name": "ArtistId"
+                      "name": "artistId"
                     }
                   },
-                  "Name": {
+                  "name": {
                     "column": {
-                      "name": "Name"
+                      "name": "name"
                     }
                   }
                 }
@@ -1097,62 +1097,62 @@
           "kind": "ObjectBooleanExpressionType",
           "version": "v1",
           "definition": {
-            "name": "Artist_Where_Exp",
-            "objectType": "Artist",
+            "name": "artist_Where_Exp",
+            "objectType": "artist",
             "dataConnectorName": "db",
-            "dataConnectorObjectType": "Artist",
+            "dataConnectorObjectType": "artist",
             "comparableFields": [
               {
-                "fieldName": "ArtistId",
+                "fieldName": "artistId",
                 "operators": {
                   "enableAll": true
                 }
               },
               {
-                "fieldName": "Name",
+                "fieldName": "name",
                 "operators": {
                   "enableAll": true
                 }
               }
             ],
             "graphql": {
-              "typeName": "Artist_Where_Exp"
+              "typeName": "artist_Where_Exp"
             }
           }
         },
         {
           "definition": {
-            "name": "Artists",
-            "objectType": "Artist",
+            "name": "artists",
+            "objectType": "artist",
             "source": {
               "dataConnectorName": "db",
-              "collection": "Artist"
+              "collection": "artist"
             },
             "graphql": {
               "selectUniques": [
                 {
-                  "queryRootField": "ArtistByID",
-                  "uniqueIdentifier": ["ArtistId"]
+                  "queryRootField": "artistByID",
+                  "uniqueIdentifier": ["artistId"]
                 }
               ],
               "selectMany": {
-                "queryRootField": "Artist"
+                "queryRootField": "artist"
               },
-              "orderByExpressionType": "Artist_Order_By",
+              "orderByExpressionType": "artist_Order_By",
               "apolloFederation": {
                 "entitySource": true
               }
             },
-            "filterExpressionType": "Artist_Where_Exp",
+            "filterExpressionType": "artist_Where_Exp",
             "orderableFields": [
               {
-                "fieldName": "ArtistId",
+                "fieldName": "artistId",
                 "orderByDirections": {
                   "enableAll": true
                 }
               },
               {
-                "fieldName": "Name",
+                "fieldName": "name",
                 "orderByDirections": {
                   "enableAll": true
                 }
@@ -1166,13 +1166,13 @@
           "kind": "ObjectBooleanExpressionType",
           "version": "v1",
           "definition": {
-            "name": "Album_Where_Exp",
-            "objectType": "Album",
+            "name": "album_Where_Exp",
+            "objectType": "album",
             "dataConnectorName": "db",
-            "dataConnectorObjectType": "Album",
+            "dataConnectorObjectType": "album",
             "comparableFields": [
               {
-                "fieldName": "AlbumId",
+                "fieldName": "albumId",
                 "operators": {
                   "enableAll": true
                 }
@@ -1184,41 +1184,41 @@
                 }
               },
               {
-                "fieldName": "ArtistId",
+                "fieldName": "artistId",
                 "operators": {
                   "enableAll": true
                 }
               }
             ],
             "graphql": {
-              "typeName": "Album_Where_Exp"
+              "typeName": "album_Where_Exp"
             }
           }
         },
         {
           "definition": {
-            "name": "Albums",
-            "objectType": "Album",
+            "name": "albums",
+            "objectType": "album",
             "source": {
               "dataConnectorName": "db",
-              "collection": "Album"
+              "collection": "album"
             },
             "graphql": {
               "selectUniques": [
                 {
-                  "queryRootField": "AlbumByID",
-                  "uniqueIdentifier": ["AlbumId"]
+                  "queryRootField": "albumByID",
+                  "uniqueIdentifier": ["albumId"]
                 }
               ],
               "selectMany": {
-                "queryRootField": "Album"
+                "queryRootField": "album"
               },
-              "orderByExpressionType": "Album_Order_By"
+              "orderByExpressionType": "album_Order_By"
             },
-            "filterExpressionType": "Album_Where_Exp",
+            "filterExpressionType": "album_Where_Exp",
             "orderableFields": [
               {
-                "fieldName": "AlbumId",
+                "fieldName": "albumId",
                 "orderByDirections": {
                   "enableAll": true
                 }
@@ -1230,7 +1230,7 @@
                 }
               },
               {
-                "fieldName": "ArtistId",
+                "fieldName": "artistId",
                 "orderByDirections": {
                   "enableAll": true
                 }
@@ -1256,13 +1256,13 @@
                 }
               },
               {
-                "fieldName": "Name",
+                "fieldName": "name",
                 "operators": {
                   "enableAll": true
                 }
               },
               {
-                "fieldName": "AlbumId",
+                "fieldName": "albumId",
                 "operators": {
                   "enableAll": true
                 }
@@ -1302,13 +1302,13 @@
                 }
               },
               {
-                "fieldName": "Name",
+                "fieldName": "name",
                 "orderByDirections": {
                   "enableAll": true
                 }
               },
               {
-                "fieldName": "AlbumId",
+                "fieldName": "albumId",
                 "orderByDirections": {
                   "enableAll": true
                 }
@@ -1394,16 +1394,16 @@
             "name": "artist_below_id_Where_Exp",
             "objectType": "artist_below_id",
             "dataConnectorName": "db",
-            "dataConnectorObjectType": "Artist",
+            "dataConnectorObjectType": "artist",
             "comparableFields": [
               {
-                "fieldName": "ArtistId",
+                "fieldName": "artistId",
                 "operators": {
                   "enableAll": true
                 }
               },
               {
-                "fieldName": "Name",
+                "fieldName": "name",
                 "operators": {
                   "enableAll": true
                 }
@@ -1442,13 +1442,13 @@
             "filterExpressionType": "artist_below_id_Where_Exp",
             "orderableFields": [
               {
-                "fieldName": "ArtistId",
+                "fieldName": "artistId",
                 "orderByDirections": {
                   "enableAll": true
                 }
               },
               {
-                "fieldName": "Name",
+                "fieldName": "name",
                 "orderByDirections": {
                   "enableAll": true
                 }
@@ -1511,7 +1511,7 @@
                 "type": "String!"
               }
             ],
-            "outputType": "Album_response",
+            "outputType": "album_response",
             "source": {
               "dataConnectorName": "db",
               "dataConnectorCommand": {
@@ -1544,7 +1544,7 @@
                 "type": "String!"
               }
             ],
-            "outputType": "Artist_response",
+            "outputType": "artist_response",
             "source": {
               "dataConnectorName": "db",
               "dataConnectorCommand": {
@@ -1727,18 +1727,18 @@
 
         {
           "definition": {
-            "typeName": "Artist",
+            "typeName": "artist",
             "permissions": [
               {
                 "role": "admin",
                 "output": {
-                  "allowedFields": ["ArtistId", "Name"]
+                  "allowedFields": ["artistId", "name"]
                 }
               },
               {
                 "role": "complex-permission",
                 "output": {
-                  "allowedFields": ["ArtistId", "Name"]
+                  "allowedFields": ["artistId", "name"]
                 }
               }
             ]
@@ -1748,7 +1748,7 @@
         },
         {
           "definition": {
-            "typeName": "Artist_response",
+            "typeName": "artist_response",
             "permissions": [
               {
                 "role": "admin",
@@ -1763,12 +1763,12 @@
         },
         {
           "definition": {
-            "typeName": "Album",
+            "typeName": "album",
             "permissions": [
               {
                 "role": "admin",
                 "output": {
-                  "allowedFields": ["AlbumId", "Title", "ArtistId"]
+                  "allowedFields": ["albumId", "Title", "artistId"]
                 }
               }
             ]
@@ -1778,7 +1778,7 @@
         },
         {
           "definition": {
-            "typeName": "Album_response",
+            "typeName": "album_response",
             "permissions": [
               {
                 "role": "admin",
@@ -1798,7 +1798,7 @@
               {
                 "role": "admin",
                 "output": {
-                  "allowedFields": ["TrackId", "Name", "AlbumId"]
+                  "allowedFields": ["TrackId", "name", "albumId"]
                 }
               }
             ]
@@ -1828,7 +1828,7 @@
               {
                 "role": "admin",
                 "output": {
-                  "allowedFields": ["ArtistId", "Name"]
+                  "allowedFields": ["artistId", "name"]
                 }
               }
             ]
@@ -1838,7 +1838,7 @@
         },
         {
           "definition": {
-            "modelName": "Artists",
+            "modelName": "artists",
             "permissions": [
               {
                 "role": "admin",
@@ -1851,7 +1851,7 @@
                 "select": {
                   "filter": {
                     "relationship": {
-                      "name": "Albums",
+                      "name": "albums",
                       "predicate": {
                         "fieldComparison": {
                           "field": "Title",
@@ -1872,7 +1872,7 @@
         },
         {
           "definition": {
-            "modelName": "Albums",
+            "modelName": "albums",
             "permissions": [
               {
                 "role": "admin",
@@ -1932,11 +1932,11 @@
         },
         {
           "definition": {
-            "source": "Artist",
-            "name": "Albums",
+            "source": "artist",
+            "name": "albums",
             "target": {
               "model": {
-                "name": "Albums",
+                "name": "albums",
                 "relationshipType": "Array"
               }
             },
@@ -1945,14 +1945,14 @@
                 "source": {
                   "fieldPath": [
                     {
-                      "fieldName": "ArtistId"
+                      "fieldName": "artistId"
                     }
                   ]
                 },
                 "target": {
                   "modelField": [
                     {
-                      "fieldName": "ArtistId"
+                      "fieldName": "artistId"
                     }
                   ]
                 }
@@ -1964,7 +1964,7 @@
         },
         {
           "definition": {
-            "source": "Album",
+            "source": "album",
             "name": "Tracks",
             "target": {
               "model": {
@@ -1977,14 +1977,14 @@
                 "source": {
                   "fieldPath": [
                     {
-                      "fieldName": "AlbumId"
+                      "fieldName": "albumId"
                     }
                   ]
                 },
                 "target": {
                   "modelField": [
                     {
-                      "fieldName": "AlbumId"
+                      "fieldName": "albumId"
                     }
                   ]
                 }
@@ -1996,11 +1996,11 @@
         },
         {
           "definition": {
-            "source": "Album",
-            "name": "Artist",
+            "source": "album",
+            "name": "artist",
             "target": {
               "model": {
-                "name": "Artists",
+                "name": "artists",
                 "relationshipType": "Object"
               }
             },
@@ -2009,14 +2009,14 @@
                 "source": {
                   "fieldPath": [
                     {
-                      "fieldName": "ArtistId"
+                      "fieldName": "artistId"
                     }
                   ]
                 },
                 "target": {
                   "modelField": [
                     {
-                      "fieldName": "ArtistId"
+                      "fieldName": "artistId"
                     }
                   ]
                 }
@@ -2029,10 +2029,10 @@
         {
           "definition": {
             "source": "Track",
-            "name": "Album",
+            "name": "album",
             "target": {
               "model": {
-                "name": "Albums",
+                "name": "albums",
                 "relationshipType": "Object"
               }
             },
@@ -2041,14 +2041,14 @@
                 "source": {
                   "fieldPath": [
                     {
-                      "fieldName": "AlbumId"
+                      "fieldName": "albumId"
                     }
                   ]
                 },
                 "target": {
                   "modelField": [
                     {
-                      "fieldName": "AlbumId"
+                      "fieldName": "albumId"
                     }
                   ]
                 }
@@ -2086,17 +2086,17 @@
           "kind": "ObjectType",
           "version": "v1",
           "definition": {
-            "name": "V2InsertArtistObject",
+            "name": "V2InsertartistObject",
             "fields": [
               {
-                "name": "ArtistId",
+                "name": "artistId",
                 "type": "Int!",
                 "description": null,
                 "deprecated": null,
                 "arguments": []
               },
               {
-                "name": "Name",
+                "name": "name",
                 "type": "String",
                 "description": null,
                 "deprecated": null,
@@ -2105,21 +2105,21 @@
             ],
             "globalIdFields": null,
             "graphql": {
-              "typeName": "V2InsertArtistObject",
-              "inputTypeName": "V2InsertArtistObjectInput",
+              "typeName": "V2InsertartistObject",
+              "inputTypeName": "V2InsertartistObjectInput",
               "apolloFederation": null
             },
             "description": null,
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "v2_insert_Artist_object",
+                "dataConnectorObjectType": "v2_insert_artist_object",
                 "fieldMapping": {
-                  "ArtistId": {
-                    "column": { "name": "ArtistId", "argumentMapping": null }
+                  "artistId": {
+                    "column": { "name": "artistId", "argumentMapping": null }
                   },
-                  "Name": {
-                    "column": { "name": "Name", "argumentMapping": null }
+                  "name": {
+                    "column": { "name": "name", "argumentMapping": null }
                   }
                 }
               }
@@ -2130,11 +2130,11 @@
           "kind": "TypePermissions",
           "version": "v1",
           "definition": {
-            "typeName": "V2InsertArtistObject",
+            "typeName": "V2InsertartistObject",
             "permissions": [
               {
                 "role": "admin",
-                "output": { "allowedFields": ["ArtistId", "Name"] },
+                "output": { "allowedFields": ["artistId", "name"] },
                 "input": null
               }
             ]
@@ -2144,7 +2144,7 @@
           "kind": "ObjectType",
           "version": "v1",
           "definition": {
-            "name": "V2InsertArtistResponse",
+            "name": "V2InsertartistResponse",
             "fields": [
               {
                 "name": "affectedRows",
@@ -2155,7 +2155,7 @@
               },
               {
                 "name": "returning",
-                "type": "[Artist!]!",
+                "type": "[artist!]!",
                 "description": "Data from rows affected by the mutation",
                 "deprecated": null,
                 "arguments": []
@@ -2163,15 +2163,15 @@
             ],
             "globalIdFields": null,
             "graphql": {
-              "typeName": "V2InsertArtistResponse",
-              "inputTypeName": "V2InsertArtistResponseInput",
+              "typeName": "V2InsertartistResponse",
+              "inputTypeName": "V2InsertartistResponseInput",
               "apolloFederation": null
             },
-            "description": "Responses from the 'v2_insert_Artist' procedure",
+            "description": "Responses from the 'v2_insert_artist' procedure",
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "v2_insert_Artist_response",
+                "dataConnectorObjectType": "v2_insert_artist_response",
                 "fieldMapping": {
                   "affectedRows": {
                     "column": {
@@ -2191,7 +2191,7 @@
           "kind": "TypePermissions",
           "version": "v1",
           "definition": {
-            "typeName": "V2InsertArtistResponse",
+            "typeName": "V2InsertartistResponse",
             "permissions": [
               {
                 "role": "admin",
@@ -2205,24 +2205,24 @@
           "kind": "Command",
           "version": "v1",
           "definition": {
-            "name": "V2InsertArtist",
-            "outputType": "V2InsertArtistResponse!",
+            "name": "V2Insertartist",
+            "outputType": "V2InsertartistResponse!",
             "arguments": [
               {
                 "name": "objects",
-                "type": "[V2InsertArtistObject!]!",
+                "type": "[V2InsertartistObject!]!",
                 "description": null
               },
               {
                 "name": "post_check",
-                "type": "ArtistBoolExp!",
-                "description": "Insert permission predicate over the 'Artist' collection"
+                "type": "artistBoolExp!",
+                "description": "Insert permission predicate over the 'artist' collection"
               }
             ],
             "source": {
               "dataConnectorName": "db",
               "dataConnectorCommand": {
-                "procedure": "v2_insert_Artist"
+                "procedure": "v2_insert_artist"
               },
               "argumentMapping": {
                 "post_check": "post_check",
@@ -2230,18 +2230,18 @@
               }
             },
             "graphql": {
-              "rootFieldName": "v2InsertArtist",
+              "rootFieldName": "v2Insertartist",
               "rootFieldKind": "Mutation",
               "deprecated": null
             },
-            "description": "Insert into the Artist table"
+            "description": "Insert into the artist table"
           }
         },
         {
           "kind": "CommandPermissions",
           "version": "v1",
           "definition": {
-            "commandName": "V2InsertArtist",
+            "commandName": "V2Insertartist",
             "permissions": [
               {
                 "role": "admin",
@@ -2252,7 +2252,7 @@
                     "value": {
                       "booleanExpression": {
                         "fieldComparison": {
-                          "field": "Name",
+                          "field": "name",
                           "operator": "_eq",
                           "value": {
                             "literal": "Olympians"
@@ -2270,15 +2270,15 @@
           "kind": "ObjectBooleanExpressionType",
           "version": "v1",
           "definition": {
-            "name": "ArtistBoolExp",
-            "objectType": "Artist",
+            "name": "artistBoolExp",
+            "objectType": "artist",
             "dataConnectorName": "db",
-            "dataConnectorObjectType": "Artist",
+            "dataConnectorObjectType": "artist",
             "comparableFields": [
-              { "fieldName": "ArtistId", "operators": { "enableAll": true } },
-              { "fieldName": "Name", "operators": { "enableAll": true } }
+              { "fieldName": "artistId", "operators": { "enableAll": true } },
+              { "fieldName": "name", "operators": { "enableAll": true } }
             ],
-            "graphql": { "typeName": "ArtistBoolExp" }
+            "graphql": { "typeName": "artistBoolExp" }
           }
         },
 
@@ -2286,7 +2286,7 @@
           "kind": "ObjectType",
           "version": "v1",
           "definition": {
-            "name": "UpdateColumnArtistArtistId",
+            "name": "UpdateColumnartistartistId",
             "fields": [
               {
                 "name": "set",
@@ -2298,15 +2298,15 @@
             ],
             "globalIdFields": null,
             "graphql": {
-              "typeName": "UpdateColumnArtistArtistId",
-              "inputTypeName": "UpdateColumnArtistArtistIdInput",
+              "typeName": "UpdateColumnartistartistId",
+              "inputTypeName": "UpdateColumnartistartistIdInput",
               "apolloFederation": null
             },
-            "description": "Update the 'ArtistId' column in the 'Artist' collection",
+            "description": "Update the 'artistId' column in the 'artist' collection",
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "update_column_Artist_ArtistId",
+                "dataConnectorObjectType": "update_column_artist_artistId",
                 "fieldMapping": {
                   "set": {
                     "column": { "name": "_set", "argumentMapping": null }
@@ -2320,7 +2320,7 @@
           "kind": "TypePermissions",
           "version": "v1",
           "definition": {
-            "typeName": "UpdateColumnArtistArtistId",
+            "typeName": "UpdateColumnartistartistId",
             "permissions": [
               {
                 "role": "admin",
@@ -2334,7 +2334,7 @@
           "kind": "ObjectType",
           "version": "v1",
           "definition": {
-            "name": "UpdateColumnArtistName",
+            "name": "UpdateColumnartistName",
             "fields": [
               {
                 "name": "set",
@@ -2346,15 +2346,15 @@
             ],
             "globalIdFields": null,
             "graphql": {
-              "typeName": "UpdateColumnArtistName",
-              "inputTypeName": "UpdateColumnArtistNameInput",
+              "typeName": "UpdateColumnartistName",
+              "inputTypeName": "UpdateColumnartistNameInput",
               "apolloFederation": null
             },
-            "description": "Update the 'Name' column in the 'Artist' collection",
+            "description": "Update the 'Name' column in the 'artist' collection",
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "update_column_Artist_Name",
+                "dataConnectorObjectType": "update_column_artist_Name",
                 "fieldMapping": {
                   "set": {
                     "column": { "name": "_set", "argumentMapping": null }
@@ -2368,7 +2368,7 @@
           "kind": "TypePermissions",
           "version": "v1",
           "definition": {
-            "typeName": "UpdateColumnArtistName",
+            "typeName": "UpdateColumnartistName",
             "permissions": [
               {
                 "role": "admin",
@@ -2382,40 +2382,40 @@
           "kind": "ObjectType",
           "version": "v1",
           "definition": {
-            "name": "V2UpdateArtistByArtistIdUpdateColumns",
+            "name": "V2UpdateartistByartistIdUpdateColumns",
             "fields": [
               {
-                "name": "ArtistId",
-                "type": "UpdateColumnArtistArtistId!",
-                "description": "Update the 'ArtistId' column in the 'Artist' collection.",
+                "name": "artistId",
+                "type": "UpdateColumnartistartistId!",
+                "description": "Update the 'artistId' column in the 'artist' collection.",
                 "deprecated": null,
                 "arguments": []
               },
               {
-                "name": "Name",
-                "type": "UpdateColumnArtistName!",
-                "description": "Update the 'Name' column in the 'Artist' collection.",
+                "name": "name",
+                "type": "UpdateColumnartistName!",
+                "description": "Update the 'Name' column in the 'artist' collection.",
                 "deprecated": null,
                 "arguments": []
               }
             ],
             "globalIdFields": null,
             "graphql": {
-              "typeName": "V2UpdateArtistByArtistIdUpdateColumns",
-              "inputTypeName": "V2UpdateArtistByArtistIdUpdateColumnsInput",
+              "typeName": "V2UpdateartistByartistIdUpdateColumns",
+              "inputTypeName": "V2UpdateartistByartistIdUpdateColumnsInput",
               "apolloFederation": null
             },
-            "description": "Update the columns of the 'Artist' collection",
+            "description": "Update the columns of the 'artist' collection",
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "v2_update_Artist_by_ArtistId_update_columns",
+                "dataConnectorObjectType": "v2_update_artist_by_artistId_update_columns",
                 "fieldMapping": {
-                  "ArtistId": {
-                    "column": { "name": "ArtistId", "argumentMapping": null }
+                  "artistId": {
+                    "column": { "name": "artistId", "argumentMapping": null }
                   },
-                  "Name": {
-                    "column": { "name": "Name", "argumentMapping": null }
+                  "name": {
+                    "column": { "name": "name", "argumentMapping": null }
                   }
                 }
               }
@@ -2426,11 +2426,11 @@
           "kind": "TypePermissions",
           "version": "v1",
           "definition": {
-            "typeName": "V2UpdateArtistByArtistIdUpdateColumns",
+            "typeName": "V2UpdateartistByartistIdUpdateColumns",
             "permissions": [
               {
                 "role": "admin",
-                "output": { "allowedFields": ["ArtistId", "Name"] },
+                "output": { "allowedFields": ["artistId", "name"] },
                 "input": null
               }
             ]
@@ -2440,7 +2440,7 @@
           "kind": "ObjectType",
           "version": "v1",
           "definition": {
-            "name": "V2UpdateArtistByArtistIdResponse",
+            "name": "V2UpdateartistByartistIdResponse",
             "fields": [
               {
                 "name": "affectedRows",
@@ -2451,7 +2451,7 @@
               },
               {
                 "name": "returning",
-                "type": "[Artist!]!",
+                "type": "[artist!]!",
                 "description": "Data from rows affected by the mutation",
                 "deprecated": null,
                 "arguments": []
@@ -2459,15 +2459,15 @@
             ],
             "globalIdFields": null,
             "graphql": {
-              "typeName": "V2UpdateArtistByArtistIdResponse",
-              "inputTypeName": "V2UpdateArtistByArtistIdResponseInput",
+              "typeName": "V2UpdateartistByartistIdResponse",
+              "inputTypeName": "V2UpdateartistByartistIdResponseInput",
               "apolloFederation": null
             },
-            "description": "Responses from the 'v2_update_Artist_by_ArtistId' procedure",
+            "description": "Responses from the 'v2_update_artist_by_artistId' procedure",
             "dataConnectorTypeMapping": [
               {
                 "dataConnectorName": "db",
-                "dataConnectorObjectType": "v2_update_Artist_by_ArtistId_response",
+                "dataConnectorObjectType": "v2_update_artist_by_artistId_response",
                 "fieldMapping": {
                   "affectedRows": {
                     "column": {
@@ -2487,7 +2487,7 @@
           "kind": "TypePermissions",
           "version": "v1",
           "definition": {
-            "typeName": "V2UpdateArtistByArtistIdResponse",
+            "typeName": "V2UpdateartistByartistIdResponse",
             "permissions": [
               {
                 "role": "admin",
@@ -2501,55 +2501,55 @@
           "kind": "Command",
           "version": "v1",
           "definition": {
-            "name": "V2UpdateArtistByArtistId",
-            "outputType": "V2UpdateArtistByArtistIdResponse!",
+            "name": "V2UpdateartistByartistId",
+            "outputType": "V2UpdateartistByartistIdResponse!",
             "arguments": [
               {
-                "name": "key_ArtistId",
+                "name": "key_artistId",
                 "type": "Int!",
                 "description": "The identifier of an artist"
               },
               {
                 "name": "postCheck",
-                "type": "ArtistBoolExp!",
-                "description": "Update permission post-condition predicate over the 'Artist' collection"
+                "type": "artistBoolExp!",
+                "description": "Update permission post-condition predicate over the 'artist' collection"
               },
               {
                 "name": "preCheck",
-                "type": "ArtistBoolExp!",
-                "description": "Update permission pre-condition predicate over the 'Artist' collection"
+                "type": "artistBoolExp!",
+                "description": "Update permission pre-condition predicate over the 'artist' collection"
               },
               {
                 "name": "updateColumns",
-                "type": "V2UpdateArtistByArtistIdUpdateColumns!",
+                "type": "V2UpdateartistByartistIdUpdateColumns!",
                 "description": null
               }
             ],
             "source": {
               "dataConnectorName": "db",
               "dataConnectorCommand": {
-                "procedure": "v2_update_Artist_by_ArtistId"
+                "procedure": "v2_update_artist_by_artistId"
               },
               "argumentMapping": {
-                "key_ArtistId": "key_ArtistId",
+                "key_artistId": "key_artistId",
                 "postCheck": "post_check",
                 "preCheck": "pre_check",
                 "updateColumns": "update_columns"
               }
             },
             "graphql": {
-              "rootFieldName": "v2UpdateArtistByArtistId",
+              "rootFieldName": "v2UpdateartistByartistId",
               "rootFieldKind": "Mutation",
               "deprecated": null
             },
-            "description": "Update any row on the 'Artist' collection using the 'ArtistId' key"
+            "description": "Update any row on the 'artist' collection using the 'artistId' key"
           }
         },
         {
           "kind": "CommandPermissions",
           "version": "v1",
           "definition": {
-            "commandName": "V2UpdateArtistByArtistId",
+            "commandName": "V2UpdateartistByartistId",
             "permissions": [
               {
                 "role": "admin",
@@ -2560,7 +2560,7 @@
                     "value": {
                       "booleanExpression": {
                         "fieldComparison": {
-                          "field": "Name",
+                          "field": "name",
                           "operator": "_eq",
                           "value": {
                             "literal": "AC/DC"
@@ -2574,7 +2574,7 @@
                     "value": {
                       "booleanExpression": {
                         "fieldComparison": {
-                          "field": "Name",
+                          "field": "name",
                           "operator": "_eq",
                           "value": {
                             "literal": "Olympians"
@@ -2776,7 +2776,7 @@
                           "name": "int4"
                         }
                       },
-                      "Name": {
+                      "name": {
                         "description": "The track's name",
                         "arguments": {},
                         "type": {
@@ -2784,7 +2784,7 @@
                           "name": "varchar"
                         }
                       },
-                      "AlbumId": {
+                      "albumId": {
                         "description": "The track's album ID",
                         "arguments": {},
                         "type": {
@@ -2857,11 +2857,11 @@
                 "type": "Int"
               },
               {
-                "name": "Name",
+                "name": "name",
                 "type": "String"
               },
               {
-                "name": "AlbumId",
+                "name": "albumId",
                 "type": "Int"
               }
             ],
@@ -2878,14 +2878,14 @@
                       "name": "TrackId"
                     }
                   },
-                  "Name": {
+                  "name": {
                     "column": {
-                      "name": "Name"
+                      "name": "name"
                     }
                   },
-                  "AlbumId": {
+                  "albumId": {
                     "column": {
-                      "name": "AlbumId"
+                      "name": "albumId"
                     }
                   }
                 }
@@ -2911,13 +2911,13 @@
                 }
               },
               {
-                "fieldName": "Name",
+                "fieldName": "name",
                 "operators": {
                   "enableAll": true
                 }
               },
               {
-                "fieldName": "AlbumId",
+                "fieldName": "albumId",
                 "operators": {
                   "enableAll": true
                 }
@@ -2957,13 +2957,13 @@
                 }
               },
               {
-                "fieldName": "Name",
+                "fieldName": "name",
                 "orderByDirections": {
                   "enableAll": true
                 }
               },
               {
-                "fieldName": "AlbumId",
+                "fieldName": "albumId",
                 "orderByDirections": {
                   "enableAll": true
                 }
@@ -2980,7 +2980,7 @@
               {
                 "role": "admin",
                 "output": {
-                  "allowedFields": ["SongId", "Name", "AlbumId"]
+                  "allowedFields": ["SongId", "name", "albumId"]
                 }
               }
             ]
@@ -2997,7 +2997,7 @@
                 "select": {
                   "filter": {
                     "relationship": {
-                      "name": "Album",
+                      "name": "album",
                       "predicate": {
                         "fieldComparison": {
                           "field": "Title",
@@ -3019,10 +3019,10 @@
         {
           "definition": {
             "source": "Song",
-            "name": "Album",
+            "name": "album",
             "target": {
               "model": {
-                "name": "Albums",
+                "name": "albums",
                 "subgraph": "default",
                 "relationshipType": "Object"
               }
@@ -3032,14 +3032,14 @@
                 "source": {
                   "fieldPath": [
                     {
-                      "fieldName": "AlbumId"
+                      "fieldName": "albumId"
                     }
                   ]
                 },
                 "target": {
                   "modelField": [
                     {
-                      "fieldName": "AlbumId"
+                      "fieldName": "albumId"
                     }
                   ]
                 }
