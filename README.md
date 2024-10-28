@@ -4,8 +4,9 @@ A simple plugin for caching requests on the server in-memory.
 
 ## Installation
 
-_See `tests/` for a working `docker compose` setup. It is assumed that you will
-be running `npm run dev` when you `docker compose up`._
+_See `tests/` for a working `docker compose` setup. Running `docker compose up
+engine express` in the `tests/` directory will give you a working project at
+`localhost:8081`._
 
 Add the following configuration to one of your Hasura DDN subgraphs. The first
 block describes the "pre-parse" stage, which will return the cached response if
