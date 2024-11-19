@@ -8,7 +8,7 @@ import preResponseLifecycleHook from "./routes/response.js";
 import tracer from "./tracing.js";
 
 export const app = express();
-app.use(express.json());
+app.use(express.json({limit: "50mb"}));
 
 app.post("/pre-parse", withTrace(tracer, "pre-parse", preParseLifecycleHook));
 app.post(
