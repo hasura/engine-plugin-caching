@@ -4,7 +4,7 @@ import Joi from "joi";
 export default Joi.object({
   rawRequest: Joi.object({
     query: Joi.string().min(1).required(),
-    variables: Joi.object().pattern(/^\w+$/, Joi.string()).allow(null),
+    variables: Joi.object().pattern(/^\w+$/, Joi.any()).allow(null),
     operationName: Joi.string().min(1).optional().allow(null),
   }),
 
