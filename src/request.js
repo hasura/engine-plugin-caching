@@ -3,7 +3,7 @@ import { parse } from "graphql";
 // Parse a request to convert the request into an AST, and then use that AST
 // and the other information to produce a cache key.
 export const prepareRequest = (request) => {
-  const { query, ...req } = request.rawRequest;
+  const { query, operationName, ...req } = request.rawRequest;
   const parsed = parse(query);
   stripLocations(parsed);
 
