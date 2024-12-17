@@ -10,6 +10,10 @@ import tracer from "./tracing.js";
 export const app = express();
 app.use(express.json({limit: "50mb"}));
 
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "healthy" });
+});
+
 app.post("/pre-parse", withTrace(tracer, "pre-parse", preParseLifecycleHook));
 app.post(
   "/pre-response",
