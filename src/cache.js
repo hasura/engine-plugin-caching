@@ -14,9 +14,11 @@ const client = await createClient({ url: Config.redis_url })
   .connect();
 
 // Write an entry to the configured Redis cache. These will be written
-export const writeEntryToCache = async (key, value) => {
+export const writeEntryToCache = async (key, parsed, value) => {
   initialise();
-  await client.set(key, JSON.stringify(value), { EX: Config.time_to_live })
+
+  const ttl = queriesToCache[JSON.stringify(parsed)]
+  await client.set(key, JSON.stringify(value), { EX: ttl })
 };
 
 // Look up an entry in the Redis cache.
@@ -32,7 +34,7 @@ export const shouldCache = (parsed) => {
   initialise();
 
   const key = JSON.stringify(parsed);
-  return queriesToCache.indexOf(key) != -1;
+  return key in queriesToCache;
 };
 
 // To do the lookup in the list of queries we want to cache, we first create
@@ -43,11 +45,13 @@ const initialise = () => {
   if (queriesToCache == null) {
     queriesToCache = [];
 
-    Config.queries_to_cache.forEach((query) => {
+    Config.queries_to_cache.forEach(({ query, time_to_live }) => {
       const parsed = parse(query);
       stripLocations(parsed);
 
-      queriesToCache.push(JSON.stringify(parsed));
+      queriesToCache[JSON.stringify(parsed)] = time_to_live;
     });
+
+    console.log(queriesToCache)
   }
 };
