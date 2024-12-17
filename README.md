@@ -84,28 +84,19 @@ secret that the engine should send over in its requests.
 
 ```javascript
 queries_to_cache: [
-  "query { Artist { Name } }",
-  "query { Album { Artist { Name } } }",
+  { query: "query { Artist { Name } }", time_to_live: 60 },
+  { query: "query { Album { Artist { Name } } }", time_to_live: 120 }
 ];
 ```
 
 When a user makes a request to the server, the caching plugin will parse the
 request into an AST, and then check to see whether the AST matches the AST of
-any of these queries. If it does, the query will be cached. This means that
-whitespace is unimportant in these queries, and you can write them over
-multiple lines.
+any of these queries. If it does, the query will be cached for the given amount
+of time. This means that whitespace is unimportant in these queries, and you
+can write them over multiple lines.
 
 A result will be cached for each set of session and query variables that use
 this same query template.
-
-#### The `time_to_live` for a cache entry
-
-```javascript
-time_to_live: 600;
-```
-
-The length of time after which a given cache entry should be invalidated. This
-is measured in seconds.
 
 #### A `redis_url` for storing the cache entries.
 

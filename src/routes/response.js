@@ -44,7 +44,7 @@ export default async (request) => {
     });
   }
 
-  await writeEntryToCache(key, userResponse.value.response);
+  await writeEntryToCache(key, parsed, userResponse.value.response);
 
   return respond({
     attributes: { visibility: "user" },
