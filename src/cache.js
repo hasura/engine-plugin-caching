@@ -45,8 +45,6 @@ const initialise = () => {
   if (queriesToCache == null) {
     queriesToCache = [];
 
-    console.log('Config: ', Config)
-
     Config.queries_to_cache.forEach(({ query, time_to_live }) => {
       try {
         const parsed = parse(query);
