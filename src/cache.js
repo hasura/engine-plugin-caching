@@ -46,10 +46,14 @@ const initialise = () => {
     queriesToCache = [];
 
     Config.queries_to_cache.forEach(({ query, time_to_live }) => {
-      const parsed = parse(query);
-      stripLocations(parsed);
+      try {
+        const parsed = parse(query);
+        stripLocations(parsed);
 
-      queriesToCache[JSON.stringify(parsed)] = time_to_live;
+        queriesToCache[JSON.stringify(parsed)] = time_to_live;
+      } catch (err) {
+        console.error(`Error procesing queries_to_cache from config: ${err}`)
+      }
     });
 
     console.log(queriesToCache)
