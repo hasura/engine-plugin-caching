@@ -45,11 +45,17 @@ const initialise = () => {
   if (queriesToCache == null) {
     queriesToCache = [];
 
-    Config.queries_to_cache.forEach(({ query, time_to_live }) => {
-      const parsed = parse(query);
-      stripLocations(parsed);
+    console.log('Config: ', Config)
 
-      queriesToCache[JSON.stringify(parsed)] = time_to_live;
+    Config.queries_to_cache.forEach(({ query, time_to_live }) => {
+      try {
+        const parsed = parse(query);
+        stripLocations(parsed);
+
+        queriesToCache[JSON.stringify(parsed)] = time_to_live;
+      } catch (err) {
+        console.error(`Error procesing queries_to_cache from config: ${err}`)
+      }
     });
 
     console.log(queriesToCache)
