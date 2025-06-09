@@ -16,7 +16,6 @@ export default async (request) => {
     });
   }
 
-  console.log(request.body);
   const userRequest = preParsePluginRequest.validate(request.body);
 
   if (userRequest.error != null) {
