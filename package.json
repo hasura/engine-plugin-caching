@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "test": "node --test src/**/*.test.js",
-    "test:watch": "node --test --watch src/**/*.test.js",
+    "test": "find src -name '*.test.js' -exec node --test {} +",
+    "test:watch": "node --test --watch src/request.test.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
