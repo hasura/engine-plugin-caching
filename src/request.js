@@ -1,5 +1,6 @@
 import { parse } from "graphql";
 import { Config } from "./config.js";
+import logger from "./logger.js";
 
 // Parse a request to convert the request into an AST, and then use that AST
 // and the other information to produce a cache key.
@@ -47,6 +48,10 @@ export const generateCacheKey = (request, cache_key_config) => {
       var headers = {};
       cache_key_config.headers.forEach(header => {
         if (request.headers[header] === undefined) {
+          logger.error("Required header for cache key is missing", {
+            missingHeader: header,
+            availableHeaders: request.headers ? Object.keys(request.headers) : []
+          });
           throw new Error(`Required header '${header}' for cache key is missing from request`);
         }
         headers[header] = request.headers[header];

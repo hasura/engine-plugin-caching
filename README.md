@@ -110,7 +110,7 @@ redis_url: "redis://redis:6379";
 otel_endpoint: "http://jaeger:4318/v1/traces";
 ```
 
-#### Any other `otel_headers` for the trace collectotr.
+#### Any other `otel_headers` for the trace collector.
 
 ```javascript
 otel_headers: {
