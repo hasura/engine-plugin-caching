@@ -3,6 +3,7 @@ import { createClient } from "redis";
 import { Config } from "./config.js";
 import { stripLocations } from "./request.js";
 import { parse } from "graphql";
+import logger from "./logger.js";
 
 // This will eventually house the ASTs of the queries we're going to cache.
 // Note that we cache the query for every role and different set of session
@@ -10,21 +11,49 @@ import { parse } from "graphql";
 let queriesToCache = null;
 
 const client = await createClient({ url: Config.redis_url })
-  .on("error", (err) => console.log("Client error", err))
+  .on("error", (err) => logger.logRedisEvent("error", { error: err }))
+  .on("connect", () => logger.logRedisEvent("connect"))
+  .on("reconnecting", () => logger.logRedisEvent("reconnecting", { reconnecting: true }))
   .connect();
 
 // Write an entry to the configured Redis cache. These will be written
 export const writeEntryToCache = async (key, parsed, value) => {
   initialise();
 
-  const ttl = queriesToCache[JSON.stringify(parsed)]
-  await client.set(key, JSON.stringify(value), { EX: ttl })
+  try {
+    const ttl = queriesToCache[JSON.stringify(parsed)];
+    await client.set(key, JSON.stringify(value), { EX: ttl });
+
+    logger.logCacheOperation("write", {
+      queryMatched: true,
+      ttl: ttl
+    });
+  } catch (error) {
+    logger.logCacheOperation("write_failed", {
+      error: error
+    });
+    throw error;
+  }
 };
 
 // Look up an entry in the Redis cache.
 export const lookupCacheEntry = async (key) => {
   initialise();
-  return await client.get(key);
+
+  try {
+    const result = await client.get(key);
+
+    logger.logCacheOperation("lookup", {
+      found: result !== null
+    });
+
+    return result;
+  } catch (error) {
+    logger.logCacheOperation("lookup_failed", {
+      error: error
+    });
+    throw error;
+  }
 };
 
 // Check whether the given query should be cached. To do this, we produce the
@@ -34,7 +63,13 @@ export const shouldCache = (parsed) => {
   initialise();
 
   const key = JSON.stringify(parsed);
-  return key in queriesToCache;
+  const cacheable = key in queriesToCache;
+
+  logger.debug("Query cache check", {
+    queryMatched: cacheable
+  });
+
+  return cacheable;
 };
 
 // To do the lookup in the list of queries we want to cache, we first create
@@ -44,6 +79,8 @@ export const shouldCache = (parsed) => {
 const initialise = () => {
   if (queriesToCache == null) {
     queriesToCache = [];
+    let successfulQueries = 0;
+    let failedQueries = 0;
 
     Config.queries_to_cache.forEach(({ query, time_to_live }) => {
       try {
@@ -51,11 +88,20 @@ const initialise = () => {
         stripLocations(parsed);
 
         queriesToCache[JSON.stringify(parsed)] = time_to_live;
+        successfulQueries++;
       } catch (err) {
-        console.error(`Error procesing queries_to_cache from config: ${err}`)
+        failedQueries++;
+        logger.error("Error processing queries_to_cache from config", {
+          error: err,
+          query: query ? "[QUERY_REDACTED]" : "undefined"
+        });
       }
     });
 
-    console.log(queriesToCache)
+    logger.logConfigInit({
+      queriesConfigured: successfulQueries,
+      queriesFailedToParse: failedQueries,
+      redisConnected: client.isReady
+    });
   }
 };
