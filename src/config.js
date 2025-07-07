@@ -2,6 +2,22 @@ export const Config = {
   // Hasura secret to verify the sender.
   headers: { "hasura-m-auth": "zZkhKqFjqXR4g5MZCsJUZCnhCcoPyZ" },
 
+  // Cache-key configuration. The fields to include in the cache key.
+  cache_key: {
+    // The graphql request fields to include in the cache key.
+    rawRequest: {
+      query: true,
+      operationName: false,
+      variables: true,
+    },
+    // Include the entire session object in the cache key
+    session: true,
+    // Uncomment the following to include headers in the cache key
+    headers: [
+      // "X-Hasura-Unique-Cache-Key",
+    ],
+  },
+
   // A list of queries we'd like to cache.
   //
   // These queries can also be written over multiple lines with whatever

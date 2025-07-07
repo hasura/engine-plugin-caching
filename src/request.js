@@ -1,18 +1,68 @@
 import { parse } from "graphql";
+import { Config } from "./config.js";
 
 // Parse a request to convert the request into an AST, and then use that AST
 // and the other information to produce a cache key.
 export const prepareRequest = (request) => {
-  const { query, operationName, ...req } = request.rawRequest;
+  const { query } = request.rawRequest;
   const parsed = parse(query);
   stripLocations(parsed);
 
-  const key = JSON.stringify({
-    rawRequest: { query: parsed, ...req },
-    session: request.session,
-  });
-
+  const key = generateCacheKey(request, Config.cache_key);
   return { parsed, key };
+};
+
+// Generate a cache key based on configuration and request data
+export const generateCacheKey = (request, cache_key_config) => {
+  // Extract the components from the request that were previously passed as separate parameters
+  const { query, operationName, ...req } = request.rawRequest;
+  const parsed = parse(query);
+  stripLocations(parsed);
+  var key_components = {}
+
+  if (cache_key_config){
+    if (cache_key_config.rawRequest){
+      var rawRequest = {};
+      if (cache_key_config.rawRequest.query){
+        // Use the same format as the original implementation to maintain compatibility
+        rawRequest.query = parsed;
+        // Include all remaining request properties to match original behavior
+        Object.assign(rawRequest, req);
+      }
+      if (cache_key_config.rawRequest.operationName){
+        rawRequest.operationName = operationName;
+      }
+      if (cache_key_config.rawRequest.variables){
+        rawRequest.variables = req.variables;
+      }
+      if (Object.keys(rawRequest).length > 0){
+        key_components.rawRequest = rawRequest;
+      }
+    }
+    if (cache_key_config.session === true){
+      key_components.session = request.session;
+    }
+    
+    if (cache_key_config.headers){
+      var headers = {};
+      cache_key_config.headers.forEach(header => {
+        if (request.headers[header] === undefined) {
+          throw new Error(`Required header '${header}' for cache key is missing from request`);
+        }
+        headers[header] = request.headers[header];
+      });
+      if (Object.keys(headers).length > 0){
+        key_components.headers = headers;
+      }
+    }
+  } else {
+    key_components = {
+      rawRequest: { query: parsed, ...req },
+      session: request.session,
+    };
+  }
+
+  return JSON.stringify(key_components);
 };
 
 // The AST parsed by the `graphql` package contains location information from
