@@ -47,14 +47,15 @@ export const generateCacheKey = (request, cache_key_config) => {
     if (cache_key_config.headers){
       var headers = {};
       cache_key_config.headers.forEach(header => {
-        if (request.headers[header] === undefined) {
+        let lowerHeader = header.toLowerCase();
+        if (request.headers[lowerHeader] === undefined) {
           logger.error("Required header for cache key is missing", {
-            missingHeader: header,
+            missingHeader: lowerHeader,
             availableHeaders: request.headers ? Object.keys(request.headers) : []
           });
           throw new Error(`Required header '${header}' for cache key is missing from request`);
         }
-        headers[header] = request.headers[header];
+        headers[lowerHeader] = request.headers[lowerHeader];
       });
       if (Object.keys(headers).length > 0){
         key_components.headers = headers;

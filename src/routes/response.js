@@ -38,7 +38,13 @@ export default async (request) => {
   }
 
   try {
-    const { key, parsed } = prepareRequest(userResponse.value);
+    // Pass HTTP headers to the request for cache key generation
+    const requestWithHeaders = {
+      ...userResponse.value,
+      headers: request.headers
+    };
+
+    const { key, parsed } = prepareRequest(requestWithHeaders);
 
     if (!shouldCache(parsed)) {
       logger.debug("Query not cacheable, skipping cache write", {
