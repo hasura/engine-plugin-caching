@@ -1,5 +1,7 @@
-import { SpanStatusCode } from "@opentelemetry/api";
+import { SpanStatusCode, context, propagation } from "@opentelemetry/api";
 import logger from "../logger.js";
+
+
 
 // Wrap a request handler with tracing. The handler then returns an object
 // containing tracing attributes, the HTTP response, an HTTP status, and a
@@ -7,7 +9,12 @@ import logger from "../logger.js";
 export const withTrace = (tracer, label, handler) => (req, res) => {
   const startTime = Date.now();
 
-  return tracer.startActiveSpan(label, async (span) => {
+  // Extract trace context from incoming HTTP headers
+  const parentContext = propagation.extract(context.active(), req.headers);
+
+  // Start span with the extracted parent context
+  return context.with(parentContext, () => {
+    return tracer.startActiveSpan(label, async (span) => {
     try {
       const { attributes, response, status, tracing } = await handler(req);
       const duration = Date.now() - startTime;
@@ -19,15 +26,18 @@ export const withTrace = (tracer, label, handler) => (req, res) => {
         traceMessage: tracing.message
       });
 
-      span.setStatus(tracing);
-      span.end();
-
       for (let [key, value] of Object.entries(attributes)) {
         span.setAttribute(key, value);
       }
 
+      span.setStatus(tracing);
+      span.end();
+
       res.status(status);
       res.json(response);
+
+      const carrier = {};
+      propagation.inject(context.active(), carrier);
     } catch (error) {
       const duration = Date.now() - startTime;
 
@@ -44,5 +54,6 @@ export const withTrace = (tracer, label, handler) => (req, res) => {
       res.status(500);
       res.json({ message: "Internal server error" });
     }
+    });
   });
 };
