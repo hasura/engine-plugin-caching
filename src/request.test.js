@@ -1,10 +1,10 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import { generateCacheKey } from './request.js';
+import { addHeadersToRequest, generateCacheKey } from './request.js';
 import { Config } from './config.js';
 
 describe('generateCacheKey', () => {
-  const mockRequest = {
+  const mockRawRequest = {
     rawRequest: {
       query: 'query GetUser($id: ID!) { user(id: $id) { name email } }',
       operationName: 'GetUser',
@@ -14,13 +14,14 @@ describe('generateCacheKey', () => {
     session: {
       role: 'user',
       variables: { userId: '456' }
-    },
-    headers: {
+    }
+  };
+  const mockHeaders = {
       'X-Hasura-Unique-Cache-Key': 'unique-key',
       'Authorization': 'Bearer token',
       'Content-Type': 'application/json'
-    }
-  };
+    };
+  const mockRequest = addHeadersToRequest(mockRawRequest, mockHeaders);
 
   describe('with default config (Config.cache_key)', () => {
     it('should achieve backwards compatibility - old behavior with specific config', () => {
@@ -131,8 +132,8 @@ describe('generateCacheKey', () => {
 
       assert.ok(parsed.hasOwnProperty('headers'));
       assert.deepStrictEqual(parsed.headers, {
-        'X-Hasura-Unique-Cache-Key': 'unique-key',
-        'Authorization': 'Bearer token'
+        'x-hasura-unique-cache-key': 'unique-key',
+        'authorization': 'Bearer token'
       });
     });
 
@@ -145,7 +146,7 @@ describe('generateCacheKey', () => {
       const parsed = JSON.parse(result);
 
       assert.deepStrictEqual(parsed.headers, {
-        'X-Hasura-Unique-Cache-Key': 'unique-key'
+        'x-hasura-unique-cache-key': 'unique-key'
       });
       assert.ok(!parsed.headers.hasOwnProperty('Authorization'));
     });
@@ -174,8 +175,8 @@ describe('generateCacheKey', () => {
 
       assert.ok(parsed.hasOwnProperty('headers'));
       assert.deepStrictEqual(parsed.headers, {
-        'X-Hasura-Unique-Cache-Key': 'unique-key',
-        'Authorization': 'Bearer token'
+        'x-hasura-unique-cache-key': 'unique-key',
+        'authorization': 'Bearer token'
       });
     });
   });
@@ -206,7 +207,7 @@ describe('generateCacheKey', () => {
 
       assert.deepStrictEqual(parsed.session, mockRequest.session);
       assert.deepStrictEqual(parsed.headers, {
-        'X-Hasura-Unique-Cache-Key': 'unique-key'
+        'x-hasura-unique-cache-key': 'unique-key'
       });
     });
 
@@ -281,6 +282,47 @@ describe('generateCacheKey', () => {
           message: "Required header 'X-Hasura-Unique-Cache-Key' for cache key is missing from request"
         }
       );
+    });
+
+    it('should handle mixed-case header keys correctly', () => {
+      const newMockHeaders = {
+          'X-HASURA-UNIQUE-CACHE-KEY': 'unique-key',  // uppercase
+          'authorization': 'Bearer token',             // lowercase
+          'Content-Type': 'application/json'          // mixed case
+        }
+      const requestWithMixedCaseHeaders = addHeadersToRequest(mockRawRequest, newMockHeaders);
+
+      const config = {
+        headers: ['X-Hasura-Unique-Cache-Key', 'Authorization', 'content-type']
+      };
+
+      const result = generateCacheKey(requestWithMixedCaseHeaders, config);
+      const parsed = JSON.parse(result);
+
+      assert.ok(parsed.hasOwnProperty('headers'));
+      assert.deepStrictEqual(parsed.headers, {
+        'x-hasura-unique-cache-key': 'unique-key',
+        'authorization': 'Bearer token',
+        'content-type': 'application/json'
+      });
+    });
+
+    it('should normalize header keys to lowercase in cache key', () => {
+      const requestWithMixedCaseHeaders = addHeadersToRequest(mockRawRequest, {
+        'Authorization': 'Bearer token'
+      });
+
+      const config = {
+        headers: ['AUTHORIZATION']  // config uses uppercase
+      };
+
+      const result = generateCacheKey(requestWithMixedCaseHeaders, config);
+      const parsed = JSON.parse(result);
+
+      assert.ok(parsed.hasOwnProperty('headers'));
+      assert.deepStrictEqual(parsed.headers, {
+        'authorization': 'Bearer token'  // normalized to lowercase
+      });
     });
   });
 

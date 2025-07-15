@@ -1,5 +1,5 @@
 import { Config } from "../config.js";
-import { prepareRequest } from "../request.js";
+import { addHeadersToRequest, prepareRequest } from "../request.js";
 import { lookupCacheEntry, shouldCache, writeEntryToCache } from "../cache.js";
 
 import preResponsePluginRequest from "../types/response.js";
@@ -38,7 +38,10 @@ export default async (request) => {
   }
 
   try {
-    const { key, parsed } = prepareRequest(userResponse.value);
+    // Pass HTTP headers to the request for cache key generation
+    const requestWithHeaders = addHeadersToRequest(userResponse.value.request, request.headers);
+
+    const { key, parsed } = prepareRequest(requestWithHeaders);
 
     if (!shouldCache(parsed)) {
       logger.debug("Query not cacheable, skipping cache write", {
