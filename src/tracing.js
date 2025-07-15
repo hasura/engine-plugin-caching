@@ -5,8 +5,14 @@ import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { HttpInstrumentation } from "@opentelemetry/instrumentation-http";
 import { Resource } from "@opentelemetry/resources";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
+import {
+  CompositePropagator,
+  W3CTraceContextPropagator,
+  W3CBaggagePropagator
+} from "@opentelemetry/core";
+import { B3Propagator, B3InjectEncoding } from "@opentelemetry/propagator-b3";
 
-import { trace } from "@opentelemetry/api";
+import { trace, propagation } from "@opentelemetry/api";
 import { Config } from "./config.js";
 
 const provider = new NodeTracerProvider({
@@ -23,5 +29,21 @@ const traceExporter = new OTLPTraceExporter({
 provider.addSpanProcessor(new SimpleSpanProcessor(traceExporter));
 provider.register();
 
-registerInstrumentations({ instrumentations: [new HttpInstrumentation()] });
+// Configure propagators to support both W3C Trace Context and B3 formats
+propagation.setGlobalPropagator(
+  new CompositePropagator({
+    propagators: [
+      new W3CTraceContextPropagator(), // For traceparent/tracestate headers
+      new W3CBaggagePropagator(),      // For baggage headers
+      new B3Propagator(),              // For B3 multi-header format
+      new B3Propagator({
+        injectEncoding: B3InjectEncoding.SINGLE_HEADER
+      })                               // For B3 single-header format
+    ],
+  })
+);
+
+// Register HTTP instrumentation to automatically propagate context
+registerInstrumentations({ instrumentations: [new HttpInstrumentation()]});
+
 export default trace.getTracer("engine-plugin-caching");

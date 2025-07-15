@@ -31,7 +31,7 @@ export default async (request) => {
     });
 
     return userError({
-      attributes: { visibility: null },
+      attributes: { "internal.visibility": null },
       response: { message: "bad request: " + userResponse.error },
       message: "bad request: " + userResponse.error,
     });
@@ -49,7 +49,7 @@ export default async (request) => {
       });
 
       return respond({
-        attributes: { visibility: "user" },
+        attributes: { "internal.visibility": "user" },
         message: "nothing saved to cache",
       });
     }
@@ -62,7 +62,7 @@ export default async (request) => {
       });
 
       return respond({
-        attributes: { visibility: "user" },
+        attributes: { "internal.visibility": "user" },
         message: "value already cached",
       });
     }
@@ -74,7 +74,7 @@ export default async (request) => {
     });
 
     return respond({
-      attributes: { visibility: "user" },
+      attributes: { "internal.visibility": "user" },
       message: "saved response to cache",
     });
   } catch (error) {

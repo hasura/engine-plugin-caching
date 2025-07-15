@@ -31,7 +31,7 @@ export default async (request) => {
     });
 
     return userError({
-      attributes: { visibility: null },
+      attributes: { "internal.visibility": null },
       response: { message: "bad request: " + userRequest.error },
       message: "bad request: " + userRequest.error,
     });
@@ -49,7 +49,7 @@ export default async (request) => {
       });
 
       return continue_({
-        attributes: { visibility: "user" },
+        attributes: { "internal.visibility": "user" },
         message: "query not listed as cacheable",
       });
     }
@@ -62,7 +62,7 @@ export default async (request) => {
       });
 
       return continue_({
-        attributes: { visibility: "user" },
+        attributes: { "internal.visibility": "user" },
         message: "found cacheable query with no current entry",
       });
     }
@@ -72,7 +72,7 @@ export default async (request) => {
     });
 
     return respond({
-      attributes: { visibility: "user" },
+      attributes: { "internal.visibility": "user" },
       response: JSON.parse(lookup),
       message: "found query response in cache",
     });
