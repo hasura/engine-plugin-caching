@@ -39,7 +39,7 @@ export default async (request) => {
 
   try {
     // Pass HTTP headers to the request for cache key generation
-    const requestWithHeaders = addHeadersToRequest(userResponse.value.request, request.headers);
+    const requestWithHeaders = addHeadersToRequest(userResponse.value, request.headers);
 
     const { key, parsed } = prepareRequest(requestWithHeaders);
 
