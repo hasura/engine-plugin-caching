@@ -1,5 +1,5 @@
 import { Config } from "../config.js";
-import { prepareRequest } from "../request.js";
+import { addHeadersToRequest, prepareRequest } from "../request.js";
 import { lookupCacheEntry, shouldCache } from "../cache.js";
 
 import preParsePluginRequest from "../types/parse.js";
@@ -39,10 +39,7 @@ export default async (request) => {
 
   try {
     // Pass HTTP headers to the request for cache key generation
-    const requestWithHeaders = {
-      ...userRequest.value,
-      headers: request.headers
-    };
+    const requestWithHeaders = addHeadersToRequest(userRequest.value, request.headers);
 
     const { key, parsed } = prepareRequest(requestWithHeaders);
 

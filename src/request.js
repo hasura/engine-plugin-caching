@@ -84,3 +84,16 @@ export const stripLocations = (abstractSyntaxTree) => {
       }
   }
 };
+
+// Add headers to a request object
+export const addHeadersToRequest = (request, headers) => {
+  // lowercase all header keys
+  const lowercasedHeaders = Object.fromEntries(
+    Object.entries(headers).map(([key, value]) => [key.toLowerCase(), value])
+  );
+
+  const requestWithHeaders = { ...request };
+  requestWithHeaders.headers = lowercasedHeaders;
+  return requestWithHeaders;
+};
+
