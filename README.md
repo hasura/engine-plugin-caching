@@ -1,6 +1,6 @@
 # Server-side caching plugin
 
-A simple plugin for Hasura DDN server-side request caching.
+A simple plugin for Hasura DDN server-side request caching.  It uses Redis and more information can be found at https://hasura.io/docs/3.0/plugins/caching/how-to/
 
 ## Installation
 
